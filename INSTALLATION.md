@@ -1,612 +1,328 @@
-\# Remote Node - Installation Guide
+# Remote Node – Installation Guide
 
+Installation and removal for **Desktop** (GUI) and **CLI** builds of Remote Node, including Linux `.deb` packages and Windows executables.
 
-
-Complete installation and removal guide for the Remote Node Debian package.
-
-
-
-\*\*Package:\*\* `remote-node\_1.0.0\_amd64.deb`  
-
-\*\*Version:\*\* 1.0.0  
-
-\*\*Architecture:\*\* amd64 (64-bit Intel/AMD)  
-
-\*\*Author:\*\* Kishan Sakhiya <kishan.sakhiya@smartsensesolutions.com>
-
-
+**Current bundled artifacts (example):** development **v1.1.0** under `binary/development/v1.1.0/`.  
+**Author:** Kishan Sakhiya <kishan.sakhiya@smartsensesolutions.com>
 
 ---
 
+## Table of Contents
 
-
-\## Table of Contents
-
-
-
-\- \[System Requirements](#system-requirements)
-
-\- \[Installation Methods](#installation-methods)
-
-&nbsp; - \[Method 1: Using dpkg](#method-1-using-dpkg-recommended)
-
-&nbsp; - \[Method 2: Using apt](#method-2-using-apt)
-
-&nbsp; - \[Method 3: Using gdebi](#method-3-using-gdebi)
-
-\- \[Post-Installation](#post-installation)
-
-\- \[Verification](#verification)
-
-\- \[Usage](#usage)
-
-\- \[Uninstallation](#uninstallation)
-
-\- \[Troubleshooting](#troubleshooting)
-
-\- \[Advanced Topics](#advanced-topics)
-
-
+- [Artifacts in this repository](#artifacts-in-this-repository)
+- [System Requirements](#system-requirements)
+- [Desktop – Ubuntu / Debian (.deb)](#desktop--ubuntu--debian-deb)
+- [Desktop – Windows (.exe)](#desktop--windows-exe)
+- [CLI – Ubuntu / Debian (.deb)](#cli--ubuntu--debian-deb)
+- [CLI – Windows (.exe)](#cli--windows-exe)
+- [Post-Installation](#post-installation)
+- [Verification](#verification)
+- [Usage](#usage)
+- [Uninstallation](#uninstallation)
+- [Troubleshooting](#troubleshooting)
+- [Advanced Topics](#advanced-topics)
 
 ---
 
-
-
-\## System Requirements
-
-
-
-\### Supported Operating Systems
-
-
-
-\- \*\*Ubuntu:\*\* 20.04 LTS, 22.04 LTS, 24.04 LTS
-
-\- \*\*Debian:\*\* 11 (Bullseye), 12 (Bookworm)
-
-\- \*\*Linux Mint:\*\* 20.x, 21.x
-
-\- \*\*Pop!\_OS:\*\* 20.04+
-
-\- \*\*Other Debian-based distributions\*\* with compatible dependencies
-
-
-
-\### Hardware Requirements
-
-
-
-\- \*\*Architecture:\*\* 64-bit (amd64) Intel or AMD processor
-
-\- \*\*RAM:\*\* Minimum 2 GB (4 GB recommended)
-
-\- \*\*Disk Space:\*\* 150 MB for application + additional space for runtime data
-
-\- \*\*Display:\*\* X11 or Wayland display server
-
-
-
-\### Software Dependencies
-
-
-
-The package automatically handles most dependencies. The following will be installed if not present:
-
-
-
-\#### Required Dependencies
-
-\- `libc6` (>= 2.31)
-
-\- `libgtk-3-0` - GTK3 libraries
-
-\- `libwebkit2gtk-4.1-0` or `libwebkit2gtk-4.0-37` - WebKit2 for UI rendering
-
-
-
-\#### Recommended Dependencies
-
-\- `ca-certificates` - SSL/TLS certificate validation
-
-\- `docker.io` or `docker-ce` - For job execution and benchmarks
-
-\- `python3` - For running benchmark scripts
-
-\- `python3-pip` - Python package management
-
-
-
-\#### Suggested Dependencies
-
-\- `redis-tools` - Redis client tools for debugging
-
-
-
----
-
-
-
-\## Installation Methods
-
-
-
-\### Method 1: Using dpkg (Recommended)
-
-
-
-This is the most common method for installing `.deb` packages.
-
-
-
-
-
-\#### Step 1: Install the Package
-
-
-
-```bash
-
-sudo dpkg -i remote-node\_1.0.0\_amd64.deb
-
+## Artifacts in this repository
+
+Builds are organized by **channel**, **semantic version**, **variant** (desktop vs CLI), and **platform**:
+
+```text
+binary/
+├── development/          # Development / nightly-style builds
+├── qa/                   # QA builds (same layout when published)
+└── production/           # Release builds (same layout when published)
+
+    └── v1.1.0/
+        ├── desktop/
+        │   ├── ubuntu/
+        │   │   ├── remote-node_1.1.0-dev_amd64_22.04.deb   # Ubuntu 22.04–aligned .deb
+        │   │   └── remote-node_1.1.0-dev_amd64_24.04.deb   # Ubuntu 24.04–aligned .deb
+        │   └── windows/
+        │       └── remote-node-1.1.0-dev-windows-amd64.exe
+        └── cli/
+            ├── ubuntu/
+            │   └── remote-node-cli_1.1.0-dev_amd64.deb
+            └── windows/
+                └── remote-node-cli.exe
 ```
 
+**Choosing a desktop `.deb`:** Use the **22.04** package on Ubuntu 22.04 LTS (and similar era). Use the **24.04** package on Ubuntu 24.04 LTS. If unsure, prefer the package that matches your distribution’s base Ubuntu version.
 
+**Version strings:** Filenames use `1.1.0-dev` for development channel builds. Production filenames will typically omit `-dev` (for example `1.1.0`).
 
-\#### Step 2: Fix Dependencies (if needed)
+---
 
+## System Requirements
 
+### Supported operating systems
 
-If you see dependency errors, run:
+**Desktop & CLI**
 
+- **Ubuntu:** 20.04 LTS, 22.04 LTS, 24.04 LTS (use the matching desktop `.deb` for 22.04 vs 24.04 when both are provided)
+- **Debian:** 11 (Bullseye), 12 (Bookworm)
+- **Linux Mint:** 20.x, 21.x
+- **Pop!\_OS:** 20.04+
+- **Other Debian-based distributions** with compatible dependencies
+- **Windows:** 64-bit (amd64), Windows 10 or later (for `.exe` builds)
 
+### Hardware
+
+- **Architecture:** 64-bit (amd64) Intel or AMD (Linux `.deb` and Windows `.exe` in this layout)
+- **RAM:** Minimum 2 GB for desktop (4 GB recommended); CLI is lighter
+- **Disk:** ~150 MB for the application plus space for runtime data
+- **Desktop GUI only:** X11 or Wayland
+
+### Software dependencies (Linux desktop `.deb`)
+
+The package manager installs most dependencies. Typical pulls include:
+
+**Required**
+
+- `libc6` (>= 2.31)
+- `libgtk-3-0`
+- `libwebkit2gtk-4.1-0` or `libwebkit2gtk-4.0-37`
+
+**Recommended**
+
+- `ca-certificates`
+- `docker.io` or `docker-ce` (job execution / benchmarks)
+- `python3`, `python3-pip` (benchmark scripts)
+
+**Suggested**
+
+- `redis-tools` (debugging)
+
+---
+
+## Desktop – Ubuntu / Debian (.deb)
+
+### Method 1: `dpkg` (recommended)
+
+From the directory that contains the downloaded `.deb` (adjust the filename to your Ubuntu series):
 
 ```bash
+sudo dpkg -i remote-node_1.1.0-dev_amd64_22.04.deb
+# or
+sudo dpkg -i remote-node_1.1.0-dev_amd64_24.04.deb
+```
 
+If dependency reports errors:
+
+```bash
 sudo apt-get install -f
-
 ```
 
-
-
-This will automatically install any missing dependencies.
-
-
-
-\#### Complete Installation Command
-
-
+**One-liner:**
 
 ```bash
-
-\# One-liner that handles everything
-
-sudo dpkg -i remote-node\_1.0.0\_amd64.deb \&\& sudo apt-get install -f -y
-
+sudo dpkg -i remote-node_1.1.0-dev_amd64_24.04.deb && sudo apt-get install -f -y
 ```
 
+### Method 2: `apt`
 
+```bash
+sudo apt install ./remote-node_1.1.0-dev_amd64_24.04.deb
+```
+
+Use `./` for a local file. On older systems use `apt-get install ./file.deb`.
+
+### Method 3: `gdebi`
+
+```bash
+sudo apt-get update && sudo apt-get install -y gdebi
+sudo gdebi remote-node_1.1.0-dev_amd64_24.04.deb
+```
 
 ---
 
+## Desktop – Windows (.exe)
 
+1. Copy `remote-node-1.1.0-dev-windows-amd64.exe` to a folder of your choice (for example `%USERPROFILE%\Apps\RemoteNode\`).
+2. Double-click the executable to launch, or run it from PowerShell / Command Prompt:
 
-\### Method 2: Using apt
-
-
-
-The `apt` command can automatically resolve dependencies during installation.
-
-
-
-```bash
-
-\# Install the package with apt (Ubuntu 22.04+, Debian 12+)
-
-sudo apt install ./remote-node\_1.0.0\_amd64.deb
-
-
-
-\# For older systems, use apt-get
-
-sudo apt-get install ./remote-node\_1.0.0\_amd64.deb
-
+```powershell
+.\remote-node-1.1.0-dev-windows-amd64.exe
 ```
 
+There is no separate installer in this layout; updates replace the `.exe` file.
 
-
-\*\*Note:\*\* The `./` prefix is required when installing a local file with `apt`.
-
-
+**Optional:** Pin a shortcut to the Start menu or taskbar from the file’s context menu.
 
 ---
 
+## CLI – Ubuntu / Debian (.deb)
 
-
-\### Method 3: Using gdebi
-
-
-
-`gdebi` is a graphical and command-line tool that automatically resolves dependencies.
-
-
-
-\#### Install gdebi (if not installed)
-
-
+Install the CLI package the same way as any `.deb`:
 
 ```bash
-
-sudo apt-get update
-
-sudo apt-get install gdebi
-
+sudo dpkg -i remote-node-cli_1.1.0-dev_amd64.deb
+sudo apt-get install -f -y
 ```
 
-
-
-\#### Install the Package
-
-
-
-\*\*Command Line:\*\*
+Or:
 
 ```bash
-
-sudo gdebi remote-node\_1.0.0\_amd64.deb
-
+sudo apt install ./remote-node-cli_1.1.0-dev_amd64.deb
 ```
 
-
-
-\*\*Graphical Interface:\*\*
-
-1\. Double-click the `.deb` file in your file manager
-
-2\. It should open in Software Center or GDebi Package Installer
-
-3\. Click "Install Package"
-
-
+The installed command is expected to be available as `remote-node-cli` (verify with `which remote-node-cli` after install).
 
 ---
 
+## CLI – Windows (.exe)
 
+1. Place `remote-node-cli.exe` in a directory included in your `PATH`, **or** invoke it with a full path.
+2. Run from PowerShell:
 
-\## Post-Installation
-
-
-
-\### User Data Directory
-
-
-
-On first launch, the application creates user-specific directories:
-
-
-
+```powershell
+.\remote-node-cli.exe --help
 ```
-
-~/.config/flockchain/                        # User configuration and data
-
-&nbsp; ├── database/                               # SQLite database files
-
-&nbsp; ├── logs/                                   # Application logs
-
-&nbsp; └── cache/                                  # Temporary cache files
-
-```
-
-
-
-\### Desktop Integration
-
-
-
-The application is automatically registered in your system menu:
-
-\- \*\*Application Menu:\*\* Development → Remote Node
-
-\- \*\*Desktop Entry:\*\* Searchable via system application launcher
-
-\- \*\*Icon:\*\* Displayed in taskbar and window decorations
-
-
 
 ---
 
+## Post-Installation
 
+### User data directory (Linux desktop package)
 
-\## Verification
+On first launch:
 
+```text
+~/.config/flockchain/
+├── database/
+├── logs/
+└── cache/
+```
 
+CLI or Windows may use the same or an equivalent path under the user profile; if documentation ships with the binary, prefer that for exact paths.
 
-\### Verify Installation
+### Desktop integration (Linux `.deb`)
 
+- **Menu:** Development → Remote Node (or search “Remote Node”)
+- **Desktop entry** and icon are provided by the package
 
+---
 
-Check if the package is installed:
+## Verification
 
-
+### Linux – desktop package
 
 ```bash
-
 dpkg -l | grep remote-node
-
-```
-
-
-
-Expected output:
-
-```
-
-ii  remote-node  1.0.0  amd64  A desktop app built with Wails, React, TailwindCSS, and Go
-
-```
-
-
-
-\### Check Installed Files
-
-
-
-List all installed files:
-
-
-
-```bash
-
 dpkg -L remote-node
-
-```
-
-
-
-\### Verify Binary Location
-
-
-
-```bash
-
 which remote-node
-
-```
-
-
-
-Expected output: `/usr/bin/remote-node`
-
-
-
-\### Check Version
-
-
-
-```bash
-
 remote-node --version
-
+remote-node
 ```
 
-
-
-\### Test Application Launch
-
-
+### Linux – CLI package
 
 ```bash
-
-\# Launch from command line (should open GUI)
-
-remote-node
-
+dpkg -l | grep remote-node-cli
+which remote-node-cli
+remote-node-cli --version
 ```
 
+### Windows – desktop
 
+- Run the `.exe` and confirm the UI opens.
+- From the install folder:
+
+```powershell
+.\remote-node-1.1.0-dev-windows-amd64.exe --version
+```
+
+(if `--version` is supported; otherwise rely on the About dialog in the app)
+
+### Windows – CLI
+
+```powershell
+.\remote-node-cli.exe --version
+```
 
 ---
 
+## Usage
 
+### Desktop
 
-\## Usage
+**Application menu:** Search for “Remote Node” and launch.
 
-
-
-\### Starting the Application
-
-
-
-\#### Method 1: From Application Menu
-
-
-
-1\. Open your system's application menu/launcher
-
-2\. Search for "Remote Node"
-
-3\. Click to launch
-
-
-
-\#### Method 2: From Command Line
-
-
+**Terminal (Linux):**
 
 ```bash
-
 remote-node
-
 ```
 
+**Terminal (Windows):** run the `.exe` path as above.
 
+### CLI
+
+Use `remote-node-cli` on Linux and `remote-node-cli.exe` on Windows. See `--help` for subcommands and flags.
 
 ---
 
+## Uninstallation
 
+### Linux – remove desktop `.deb`
 
-\## Uninstallation
-
-
-
-\### Method 1: Remove Package (Keep User Data)
-
-
-
-This removes the application but preserves your configuration and data.
-
-
+**Remove package (keep user data):**
 
 ```bash
-
 sudo apt-get remove remote-node
-
 ```
 
-
-
----
-
-
-
-\### Method 2: Purge Package (Remove Everything)
-
-
-
-This removes the application AND suggests cleaning user data.
-
-
+**Purge package:**
 
 ```bash
-
 sudo apt-get purge remote-node
-
 ```
 
-
-
-After purge, you'll see a message about manually removing user data.
-
-
-
-\*\*To completely remove all user data:\*\*
-
-
+**Remove user data:**
 
 ```bash
-
-\# Remove user configuration and data
-
 rm -rf ~/.config/flockchain/
-
-
-
-\# If multiple users used the app, each user should run:
-
-\# rm -rf ~/.config/flockchain/
-
 ```
 
-
-
----
-
-
-
-\### Method 3: Complete Clean Removal
-
-
-
-Remove everything in one go:
-
-
+### Linux – remove CLI `.deb`
 
 ```bash
+sudo apt-get remove remote-node-cli
+# or
+sudo apt-get purge remote-node-cli
+```
 
-\# Remove package
+### Windows
 
-sudo apt-get purge remote-node
+- **Desktop:** Delete the `.exe` (and any shortcuts you created). Remove application data under your user profile if you want a full reset (exact folder may match `flockchain` under `%APPDATA%` or `%LOCALAPPDATA%` depending on the build).
+- **CLI:** Delete `remote-node-cli.exe` and any config/cache folders the tool created.
 
+### Cleanup (Linux)
 
-
-\# Remove user data
-
-rm -rf ~/.config/flockchain/
-
-
-
-\# Remove any leftover dependencies
-
+```bash
 sudo apt-get autoremove
-
-
-
-\# Clean package cache
-
 sudo apt-get clean
-
 ```
 
+---
 
+## Troubleshooting
+
+- **`dpkg` dependency errors:** Always run `sudo apt-get install -f` after a failed `dpkg -i`.
+- **Wrong WebKit / GTK on Debian/Ubuntu:** Install the variant your distro expects (`libwebkit2gtk-4.1-0` vs `4.0-37`).
+- **Desktop won’t start on Linux:** Check logs under `~/.config/flockchain/logs/` if present.
+- **Windows SmartScreen:** Unsigned or new builds may trigger a warning; use “Run anyway” only for artifacts you trust.
 
 ---
 
+## Advanced topics
 
-
-\### Verify Removal
-
-
-
-```bash
-
-\# Check if package is removed
-
-dpkg -l | grep remote-node
-
-
-
-\# Should show no output or:
-
-\# rc  remote-node  1.0.0  amd64  (removed, config files remain)
-
-
-
-\# Check if binary is gone
-
-which remote-node
-
-\# Should show: (nothing found)
-
-
-
-\# Check if user data is removed
-
-ls ~/.config/flockchain/
-
-\# Should show: No such file or directory
-
-```
-
-
+- **Channels:** Prefer `binary/production/...` for stable releases when those artifacts exist; use `binary/development/...` for prerelease testing.
+- **CI / headless:** The CLI build is better suited for servers and automation than the GUI desktop binary.
 
 ---
 
-
-
-\*\*Last Updated:\*\* February 2026  
-
-\*\*Package Version:\*\* 1.0.0  
-
-\*\*Document Version:\*\* 1.0
-
-
-
----
-
-
-
-\*\*Happy Installing! 🚀\*\*
-
-
-
-
-
+**Last updated:** March 2026  
+**Documented layout version:** 1.1.x (development filenames shown as examples)  
+**Document version:** 1.1
