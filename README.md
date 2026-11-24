@@ -1,38 +1,69 @@
-# flockchain-setup
+# Ostrich-AI/flockchain-setup
 
-Public installer and release distribution files for the remote-node software.
+Node installation/setup distribution. Inspect install actions and binary provenance before running installers.
 
-## Start here
+## Source baseline
 
-| Need | Read |
-|---|---|
-| Setup and operating context | [Handover guide](docs/HANDOVER.md) |
-| Source layout and architecture | [Architecture](docs/ARCHITECTURE.md) |
-| Provisional owner and contribution evidence | [Contributions](docs/CONTRIBUTIONS.md) |
-| Prior detailed guidance | [Preserved README](docs/legacy/README.before-20261115.md) |
+| Field | Value |
+| --- | --- |
+| Reviewed branch | main |
+| Reviewed SHA | a222161311a1cbc95cc1c9e88207dd5a59ca52f5 |
+| GitHub default | main |
+| Source class | Wider platform / sample / tooling |
+| Validation | Source/manifests inspected; application execution not claimed |
 
-## Source and ownership
+The reviewed branch is a concrete coding baseline, not proof of the staging image. Reproduce a deployed issue using its actual image/source manifest. A different default branch may contain older code.
 
-- Default branch reviewed: `main` at `c6918b1dc30d165554c5c61db8ba3b0f186c942d`.
-- Setup/source ref used for this guide: [`c6918b1dc30d165554c5c61db8ba3b0f186c942d`](https://github.com/Ostrich-AI/flockchain-setup/tree/c6918b1dc30d165554c5c61db8ba3b0f186c942d).
-- Provisional technical owner: [@KishanSakhiya](https://github.com/KishanSakhiya). This is a contribution-based coordination assignment pending confirmation; no GitHub permissions or review rules are changed.
-- Reviewed 2 selected source/document files across default and staging source where available. This is a documentation/source review, not an exhaustive security audit or a deployed-environment verification.
+## Clone the right repository
 
-## Getting started
+```sh
+git clone https://github.com/Ostrich-AI/flockchain-setup.git
+cd flockchain-setup
+git switch main
+git switch -c feature/your-change
+```
 
-A supported target operating system and the matching release asset.
+## Install, run and check
 
-Use [INSTALLATION.md](https://github.com/Ostrich-AI/flockchain-setup/blob/c6918b1dc30d165554c5c61db8ba3b0f186c942d/INSTALLATION.md) and the release-specific package/checksum record. This repository distributes binaries; source builds are performed in the remote-node repository. Signing, provenance and independent installation verification remain open.
+| Task | Observed command / requirement | Evidence |
+| --- | --- | --- |
+| Orientation | Start at the source files listed below; this repository has no universal application launch command | Reviewed tree inventory |
 
-## Working rules
+Commands are derived from the selected manifests/entrypoints. Configure only isolated local or approved sandbox dependencies before running tests or migrations. A semicolon in a table separates sequential commands; run them separately in your shell.
 
-Use synthetic data and approved test access. Keep passwords, tokens and private keys out of the repository and issue discussions. Record source ref, environment and evidence for changes. Before promoting a release, independently verify build, smoke checks, migration, rollback and recovery; this guide does not claim those checks have passed.
+## Dependencies
 
-## Existing source guides
+- See the package/image manifest and code map; this component may be documentation, infrastructure, UI or a sample rather than a standalone API.
 
-- [INSTALLATION.md](https://github.com/Ostrich-AI/flockchain-setup/blob/c6918b1dc30d165554c5c61db8ba3b0f186c942d/INSTALLATION.md)
-- [README.md](https://github.com/Ostrich-AI/flockchain-setup/blob/c6918b1dc30d165554c5c61db8ba3b0f186c942d/README.md)
+## Where to change code
 
-## Documentation maintenance
+## Configuration, tests and issues
 
-Update this README and the matching docs when interfaces, dependencies, deployment or support ownership change. Preserve historical evidence and use a reviewed documentation change. Review date: 2026-11-15.
+Read [CONFIGURATION.md](docs/onboarding/CONFIGURATION.md) before starting the process. Use [MAINTAINERS.md](MAINTAINERS.md) for issue and access routing. Unit/contract/integration are different boundaries; tests listed in package metadata have not been executed by this documentation task.
+
+Before a pull request: run the available checks, add a focused regression, update affected API/data/worker documentation and name any blocked dependency. No shared root credential is required to submit code. Product defects remain engineering issues rather than hidden documentation omissions.
+
+## Provenance
+
+[Selected source tree](https://github.com/Ostrich-AI/flockchain-setup/tree/a222161311a1cbc95cc1c9e88207dd5a59ca52f5) was inspected on 24 November 2026. Old README clone names and feature claims are not adopted without matching source evidence.
+
+## Contributor navigation
+
+- [Contribution workflow](CONTRIBUTING.md)
+- [Component architecture](docs/onboarding/ARCHITECTURE.md)
+- [Security reporting](SECURITY.md)
+- [Previous README](docs/legacy/README.before-20261124-main.md)
+
+## Concrete sample or installer entry point
+
+Use the existing [installation instructions](INSTALLATION.md). Select channel, exact version, operating system and architecture from the `binary/` tree. Prefer a versioned path over `current`. Record an independently verified asset checksum and version before installation. Installer provenance and a clean-host install have not been verified by this documentation review.
+
+- [Existing docs/HANDOVER.md](docs/HANDOVER.md)
+- [Existing docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [Existing INSTALLATION.md](INSTALLATION.md)
+
+## Branch and release boundary
+
+This README is installed on `main`. The reviewed implementation branch is `main`; use it for the setup commands above. Source pins identify the pre-documentation code baseline. Documentation updates do not establish the image running at any portal.
+
+This is a public sample/distribution repository. Its existing license and notices govern reuse; no new license is introduced here.
